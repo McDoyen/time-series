@@ -1,4 +1,4 @@
-# Time series
+# Time Series
 
 Plot and track your data across different time periods on an nv.d3 powered chart.
 
