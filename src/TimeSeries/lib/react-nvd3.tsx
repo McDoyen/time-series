@@ -1,3 +1,7 @@
+/** 
+ * This code is a based on https://github.com/NuCivic/react-nvd3 converted to typescript
+ * No review is needed on this code, as it scheduled to be replace next.
+ */
 import * as d3 from "TimeSeries/lib/d3";
 import * as React from "TimeSeries/lib/react";
 
