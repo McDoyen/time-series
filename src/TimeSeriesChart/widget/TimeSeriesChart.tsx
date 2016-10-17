@@ -7,7 +7,7 @@ import * as React from "TimeSeriesChart/lib/react";
 import ReactDOM = require ("TimeSeriesChart/lib/react-dom");
 
 import { HeightUnits, SerieConfig, WidthUnits } from "../TimeSeriesChart.d";
-import { Data, WidgetProps, Wrapper } from "./components/Wrapper";
+import { WidgetProps, Wrapper } from "./components/Wrapper";
 
 // TODO rename class
 export class TimeSeriesWrapper extends _WidgetBase {
@@ -32,11 +32,6 @@ export class TimeSeriesWrapper extends _WidgetBase {
     private contextObject: mendix.lib.MxObject;
     private dataLoaded: boolean;
 
-    constructor(args?: Object, elem?: HTMLElement) {
-        // Do not add any default value here... it wil not run in dojo!     
-        super() ;
-        return new dojoTimeSeries(args, elem);
-    }
     public createProps(): WidgetProps {
         return {
             dataLoaded: this.dataLoaded,
@@ -79,10 +74,11 @@ export class TimeSeriesWrapper extends _WidgetBase {
      * called when the widget is destroyed
      * will need to unmount react components
      */
-    public uninitialize() {
+    public uninitialize(): boolean {
         logger.debug(this.id + ".uninitialize");
         ReactDOM.unmountComponentAtNode(this.domNode);
         this.unsubscribeHandles();
+        return true;
     }
     /**
      * retrieves series data depending on its data source.
@@ -166,13 +162,12 @@ export class TimeSeriesWrapper extends _WidgetBase {
     private setDataFromObjects(objects: mendix.lib.MxObject[], serieConfig: SerieConfig): void {
         logger.debug(this.id + ".getCarouselItemsFromObject");
         logger.debug(objects);
-        serieConfig.serieData = objects.map((itemObject): Data => {
+        serieConfig.serieData = objects.map(itemObject => {
             logger.debug(itemObject);
             return {
-                xPoint: itemObject.get(serieConfig.serieXAttribute) as number,
-                yPoint: parseFloat(itemObject.get (serieConfig.serieYAttribute)), // convert Big to float or number
-                };
-
+                x: itemObject.get(serieConfig.serieXAttribute) as number,
+                y: parseFloat(itemObject.get(serieConfig.serieYAttribute) as string), // convert Big to float or number
+           };
         });
     }
 
@@ -214,14 +209,8 @@ export class TimeSeriesWrapper extends _WidgetBase {
 // Declare widget's prototype the Dojo way
 // Thanks to https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/dojo/README.md
 // tslint:disable : only-arrow-functions
-let dojoTimeSeries = dojoDeclare("TimeSeriesChart.widget.TimeSeriesChart", [ _WidgetBase ], (function (Source: any) {
+dojoDeclare("TimeSeriesChart.widget.TimeSeriesChart", [ _WidgetBase ], (function (Source: any) {
     let result: any = {};
-    // dojo.declare.constructor is called to construct the widget instance. 
-    // Implement to initialize non-primitive properties.
-    result.constructor = function () {
-        logger.debug( this.id + ".constructor dojo");
-        this.dataLoaded = false;
-    };
     for (let i in Source.prototype) {
         if (i !== "constructor" && Source.prototype.hasOwnProperty(i)) {
             result[i] = Source.prototype[i];
@@ -229,5 +218,3 @@ let dojoTimeSeries = dojoDeclare("TimeSeriesChart.widget.TimeSeriesChart", [ _Wi
     }
     return result;
 } (TimeSeriesWrapper)));
-
-export default TimeSeriesWrapper;

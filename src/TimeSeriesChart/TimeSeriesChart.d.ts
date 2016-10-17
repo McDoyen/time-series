@@ -2,8 +2,8 @@
 export default ModelProps;
 
 interface Data {
-    xPoint: number;
-    yPoint: number;
+    x: number;
+    y: number;
 }
 
 export interface SerieConfig {    
