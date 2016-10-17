@@ -43,7 +43,6 @@ export class TimeSeriesWrapper extends _WidgetBase {
             showYAxis: this.showYAxis,
             staggerLabels: this.staggerLabels,
             useInteractiveGuidelines: this.useInteractiveGuidelines,
-            widgetId: this.id + "_Wrapper",
             width: this.width,
             widthUnits: this.widthUnits,
             xAxisFormat: this.xAxisFormat,
