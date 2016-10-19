@@ -1,15 +1,15 @@
-import { Selection, select } from "TimeSeriesChart/lib/d3";
-import "TimeSeriesChart/lib/nv.d3"; // TODO make pull request voor nv.d3 to make AMD compatible.
-import { Component, DOM } from "TimeSeriesChart/lib/react";
+import { Selection, select } from "TimeSeries/lib/d3";
+import { Component, DOM } from "TimeSeries/lib/react";
 
-import { Serie } from "./Wrapper";
+import "TimeSeriesChart/lib/nv.d3"; // TODO make pull request voor nv.d3 to make AMD compatible.
+
+import { Series } from "./TimeSeries";
 
 interface Nvd3LineChartProps {
     height?: number;
     width?: number;
-    // TODO This is not type save, can we do better than copy the nvd3 type definition and make everything optional?
     chartProps?: any;
-    datum: Serie[];
+    datum: Series[];
 }
 
 function isPlainObject(object: any): boolean {
@@ -78,7 +78,11 @@ export class NVD3LineChart extends Component<Nvd3LineChartProps, {}> {
     private renderChart() {
         this.chart = (this.chart && !this.rendering) ? this.chart : nv.models.lineChart();
         configureComponents(this.chart, this.props.chartProps);
-
+        this.chart.showLegend(true)
+            .showXAxis(true)
+            .showYAxis(true)
+            .useInteractiveGuideline(true)
+            .duration(350);
         this.selection = select(this.svg)
             .datum(this.props.datum)
             .call(this.chart);

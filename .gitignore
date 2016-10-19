@@ -25,7 +25,7 @@ node_modules/
 *.map
 *.tmp
 
-src/TimeSeriesChart/widget/TimeSeriesChart.js
+src/TimeSeries/widget/components/TimeSeries.js 
 src/TimeSeriesChart/widget/components/*.js
 src/TimeSeriesChart/lib/utils.js
 src/TimeSeriesChart/lib/Polyfills.js

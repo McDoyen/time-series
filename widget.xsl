@@ -26,8 +26,7 @@
         <xsl:value-of select="concat(translate(substring($name, 1, 1), 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'), substring($name, 2))" />
 </xsl:template>
 <!-- Main template -->
-<xsl:template match="/" name="widget">
-// WARNING do not make manual Changes to this file.
+<xsl:template match="/" name="widget">// WARNING do not make manual Changes to this file.
 // widget.d.ts files is auto generated from the params in the widget.xml
 // use > 'grunt xsltproc' or > 'grunt watch' to generate a new file
 
