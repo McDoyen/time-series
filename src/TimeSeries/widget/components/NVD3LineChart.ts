@@ -19,6 +19,7 @@ function isPlainObject(object: any): boolean {
         }
         return Object.prototype.toString.call(object) === "[object Object]";
     }
+
     return false;
 }
 
@@ -64,7 +65,6 @@ export class NVD3LineChart extends Component<Nvd3LineChartProps, {}> {
     }
 
     render() {
-        // TODO check if handles height and width correctly.
         const style = {
             height: this.props.height,
             width: this.props.width

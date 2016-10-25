@@ -1,6 +1,6 @@
-describe("TimeSeries component", () => {
+describe("TimeSeries", () => {
 
-    it("should test", () => {
+    it("sample test true is true", () => {
         expect(true).toBe(true);
     });
 

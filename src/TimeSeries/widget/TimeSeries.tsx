@@ -48,23 +48,24 @@ export class TimeSeriesWrapper extends WidgetBase {
         this.dataStore.series = this.seriesConfig.reduce((previousValue: any, currentValue: SeriesConfig ) => {
             return previousValue[currentValue.seriesKey] = [];
         }, {});
+
         this.updateRendering();
     }
 
     update(object: mendix.lib.MxObject, callback?: Function) {
         this.contextObject = object;
         if (this.contextObject && this.checkConfig()) {
-        this.updateData(() => {
-            this.dataLoaded = true;
-            this.updateRendering(callback);
-        });
+            this.updateData(() => {
+                this.dataLoaded = true;
+                this.updateRendering(callback);
+            });
         } else {
             this.updateRendering(callback);
         }
         this.resetSubscriptions();
     }
 
-    uninitialize() {
+    uninitialize(): boolean {
         unmountComponentAtNode(this.domNode);
         return true;
     }
@@ -84,7 +85,6 @@ export class TimeSeriesWrapper extends WidgetBase {
                  callback();
              });
         } else {
-            // TODO: improve error message, add config check in widget component.
             logger.error(this.id + ".updateData unknown source or error in widget configuration");
             callback();
         }
@@ -96,7 +96,8 @@ export class TimeSeriesWrapper extends WidgetBase {
     private checkConfig() {
         let valid = true;
         const incorrectSeries = this.seriesConfig.filter(series =>
-        (series.seriesSource === "microflow" && !series.dataSourceMicroflow));
+            (series.seriesSource === "microflow" && !series.dataSourceMicroflow)
+        );
 
         if (incorrectSeries.length) {
             valid = false;
@@ -135,7 +136,8 @@ export class TimeSeriesWrapper extends WidgetBase {
             mx.data.get({
                 callback: callback.bind(this),
                 error: (error) => {
-                    logger.error(this.id + ": An error occurred while retrieving items: " + error);
+                    logger.error(this.id + ": An error occurred while retrieving data: ", error);
+                    mx.ui.error("An error occurred while retrieving data");
                 },
                 filter: {
                     sort: [ [ seriesConfig.seriesXAttribute, "asc" ] ]
@@ -159,7 +161,8 @@ export class TimeSeriesWrapper extends WidgetBase {
             mx.data.action({
                 callback: callback.bind(this),
                 error: (error) => {
-                    logger.error(this.id + ": An error occurred while executing microflow: " + error);
+                    logger.error(this.id + ": An error occurred while executing microflow: ", error);
+                    mx.ui.error("An error occurred while retrieving data");
                 },
                 params: {
                     actionname: seriesConfig.dataSourceMicroflow,

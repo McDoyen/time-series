@@ -13,11 +13,9 @@ module.exports = function(config) {
     config.set({
         basePath: "",
         frameworks: [ "jasmine" ],
-
         files: [
             { pattern: "src/**/*.ts", watched: true, included: false, served: false },
             { pattern: "tests/**/*.ts", watched: true, included: false, served: false },
-
             "tests/test-index.js"
         ],
         exclude: [],
@@ -26,14 +24,13 @@ module.exports = function(config) {
         },
         webpack: webpackConfig,
         webpackServer: { noInfo: true },
-        reporters: ["progress"],
+        reporters: [ "progress", "kjhtml" ],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
         browsers: [ "Chrome" ],
         singleRun: false,
-        concurrency: Infinity,
-        reporters: ["kjhtml"]
+        concurrency: Infinity
     })
 };
